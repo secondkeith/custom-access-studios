@@ -1,101 +1,151 @@
 "use strict";
 (() => {
-  const form = document.querySelector("#starting-note");
-  if (!form) return;
   const $ = (selector) => document.querySelector(selector);
-  const wish = $("#wish");
-  const important = $("#important");
-  const status = $("#note-status");
+  const form = $("#starting-note");
+  if (!form) return;
+  const wish = $("#wish"),
+    important = $("#important"),
+    questions = $("#questions"),
+    people = $("#people");
+  const inputs = [wish, important, questions, people];
+  const status = $("#note-status"),
+    dialog = $("#example-confirm");
   const examples = {
     reach: {
+      label: "01 / A mug",
+      routine: "Making tea. From the cupboard to your favourite chair.",
       question: "“I just want to reach my favourite mug.”",
-      caption: "Start with the routine, not a shopping list.",
+      caption:
+        "The tea, the mug, the familiar ritual. What would you like to keep?",
       clarify:
-        "Which shelf is awkward? What feels comfortable to reach? What would you like to keep where it is?",
-      productTitle: "A different kind of storage",
+        "Is the shelf too high, the handle hard to grip, or the mug heavy when full? Which part of making tea takes the most effort?",
+      productTitle: "Look beyond the mug",
       productCopy:
-        "Reorganised shelves or a pull-down fitting might help. A supplier can explain dimensions, load limits, and upkeep.",
-      specialistTitle: "A conversation with a cabinetmaker",
+        "What about lifting the kettle, carrying the drink, or reaching other everyday things? We would ask what else feels awkward—not assume it does.",
+      specialistTitle: "Consider what fits your life",
       specialistCopy:
-        "If an off-the-shelf fitting doesn’t suit, a cabinetmaker could explore a change to the cupboard.",
+        "A lower shelf, a different cup, or an off-the-shelf fitting may be enough. If not, a custom storage design could be explored with a suitable specialist. Keep the favourite mug in the conversation.",
+      revisit:
+        "Does it still feel comfortable when you’re tired, or if you use the kitchen differently? A useful change today can be reconsidered later, with you.",
       caution:
-        "Fit, comfortable operation, and safe installation need checking. These are avenues to explore, not a product recommendation.",
-      wish: "I’d like to reach my everyday mugs without struggling with a high cupboard.",
+        "These are prompts, not recommendations. Fit, load limits, comfortable operation and safe installation would need checking.",
+      need: "Reaching is only one part of making tea.",
+      summary: "Is it the height, the grip, or the weight?",
+      related: "Lifting the kettle, carrying tea, reaching storage.",
+      routes: "Move the mug, try an existing fitting, or explore custom storage.",
+      later: "Still comfortable on a tired day or with a different kitchen routine?",
+      wish: "I’d like to use my everyday mugs without struggling to reach, lift or carry them.",
       takeaway:
-        "Could a change to storage help, and who could check the fit and installation?",
+        "What else in making tea feels difficult? Could a simple change help, and what would need checking before choosing a product or custom design?",
+      people:
+        "CAS, to think through the routine with me; a storage supplier or suitably qualified specialist if a fitting or alteration needs exploring.",
     },
     lighting: {
+      label: "02 / A light",
+      routine: "An evening read. From your chair to the next room.",
       question: "“I’d like to turn the light on from here.”",
-      caption: "Start with where you are, not where the switch is.",
+      caption:
+        "Being comfortable in your chair should not mean being stuck in the dark.",
       clarify:
-        "Where do you use the light? What feels easiest to operate? Would you prefer a solution without an app?",
-      productTitle: "A control that comes to you",
+        "Is the difficulty reaching the switch, pressing it, or seeing it? Is the light itself comfortable to read by? Would you rather avoid an app?",
+      productTitle: "Look beyond the switch",
       productCopy:
-        "A compatible remote or plug-in lighting control may be an option. Check ease of use and what happens when Wi-Fi or power is unavailable.",
-      specialistTitle: "An electrician’s perspective",
+        "What happens when you get up at night, move between rooms, or need the curtains closed? We would explore glare, other controls and the route you use—only where they matter to you.",
+      specialistTitle: "Consider simplicity as well as features",
       specialistCopy:
-        "For changes to fixed wiring or switch positions, a qualified electrician can assess what’s suitable and safely install it.",
+        "Moving a lamp or choosing an off-the-shelf control might help. A tailored lighting or control design is another possibility. Compare compatibility, usable buttons, reliability and a backup—not just a “smart” label.",
+      revisit:
+        "If your seating, vision or preferences change, does the light still work for you? Revisit placement and controls rather than expect you to adapt to them.",
       caution:
-        "Compatibility, electrical safety, and a usable backup need checking. These are possibilities, not instructions to alter wiring.",
-      wish: "I’d like to control the light comfortably from where I sit, without a complicated app.",
+        "These are prompts, not electrical instructions. Compatibility and electrical safety need checking; fixed wiring or switch alterations require a qualified electrician.",
+      need: "A better switch is not always the whole answer.",
+      summary: "Is it reach, operation, visibility—or the light itself?",
+      related: "Other controls, the night-time route, and glare.",
+      routes: "Move a lamp, try an existing control, or explore a tailored lighting design.",
+      later: "Recheck placement and controls if seating, vision or preferences change.",
+      wish: "I’d like to control the light comfortably from where I sit, with light that suits what I’m doing.",
       takeaway:
-        "Is there a simple compatible control, and would a qualified electrician need to be involved?",
+        "Would a simple control suit me? What happens without Wi-Fi? Would a qualified electrician need to assess any changes?",
+      people:
+        "CAS, to explore what feels comfortable; a lighting supplier or designer; a qualified electrician for fixed wiring or switch changes.",
     },
     doorway: {
+      label: "03 / A door",
+      routine: "Moving freely. Through the doorway and into the day.",
       question: "“This doorway makes me think twice.”",
-      caption: "Start with the part of the journey that gets in the way.",
+      caption: "The handle is a starting point. Your whole journey matters.",
       clarify:
-        "Is it the handle, the threshold, or the space to move? What do you want to be able to carry or use through the doorway?",
-      productTitle: "Hardware worth asking about",
+        "Is gripping or turning the handle difficult? Does pushing the door take too much force? Is there enough clearance for your walker, including room to turn?",
+      productTitle: "Look beyond this door",
       productCopy:
-        "Different door hardware may be worth exploring. A supplier can explain how it operates and whether it fits the existing door.",
-      specialistTitle: "Someone to assess the whole route",
+        "Do windows, the fridge or cabinet doors ask for the same awkward grip or effort? What about the threshold and the space beyond? We would ask, not assume—and follow what you notice.",
+      specialistTitle: "Consider the cause, not just the handle",
       specialistCopy:
-        "A suitably qualified access professional or building specialist can assess clearance, thresholds, and the implications of any alteration.",
+        "Different off-the-shelf hardware could suit one difficulty but leave another untouched. A custom alteration may be worth exploring with a qualified access or building professional. Check operating force, clearance and the whole route.",
+      revisit:
+        "If you use a different mobility aid or your strength varies, would the route still work? We can consider room for change without assuming what your future will be.",
       caution:
-        "A doorway is part of a wider route. Safe access, building requirements, and any structural changes need professional assessment.",
-      wish: "I’d like to move through a familiar doorway more comfortably.",
+        "These are prompts, not a diagnosis or alteration plan. Safe access, fire safety, building requirements and structural changes need appropriate professional assessment.",
+      need: "The same doorway can be difficult for different reasons.",
+      summary: "Grip and turning, pushing force, or clearance for a walker?",
+      related: "Do windows, the fridge or cabinets ask for the same grip or effort?",
+      routes: "Compare existing hardware with a custom alteration, with qualified advice.",
+      later: "Would this route still suit a different mobility aid or varying strength?",
+      wish: "I’d like to move through a familiar doorway more comfortably, without struggling with the handle, force or space.",
       takeaway:
-        "What is making this route difficult, and which qualified professional should assess it before changes are made?",
+        "Do my windows, fridge or cabinets pose similar difficulties? What needs professional assessment, and would an option still suit me if my needs change?",
+      people:
+        "CAS, to explore the wider picture with me; a qualified access or building professional for assessment; a hardware supplier where relevant.",
     },
   };
-  const summaries = {
-    reach: { label: "01 / Reach", need: "Reach a favourite mug.", clarify: "What is awkward, and what should stay?", routes: "Storage options or a cabinetmaker.", people: "A storage supplier; a cabinetmaker if an alteration needs exploring." },
-    lighting: { label: "02 / Lighting", need: "Turn on a light from where I sit.", clarify: "Which controls feel simple to use?", routes: "Compatible controls or an electrician.", people: "A lighting supplier; a qualified electrician for fixed wiring or switch changes." },
-    doorway: { label: "03 / Doorway", need: "Move through a familiar doorway.", clarify: "The handle, the threshold, or the space?", routes: "Hardware options or a professional access assessment.", people: "A hardware supplier; a qualified access professional or building specialist." }
-  };
-  const questions = $("#questions");
-  const people = $("#people");
-  const inputs = [wish, important, questions, people];
-  const dialog = $("#example-confirm");
-  let selected = "reach";
-  let carried = null;
-  let pending = null;
-  let returnFocus = null;
+  let selected = "reach",
+    carried = null,
+    pending = null,
+    returnFocus = null;
   if (matchMedia("(min-width: 721px)").matches) {
-    $("#example-details").open = true;
+
     $("#review-note").open = true;
   }
   function updatePreview() {
-    const previews = ["#preview-wish", "#preview-important", "#preview-question", "#preview-people"];
-    const empty = ["Your everyday moment will appear here.", "The things you want to keep in mind.", "Your questions will appear here.", "People or roles to ask about."];
-    inputs.forEach((input, index) => {
-      $(previews[index]).textContent = input.value.trim() || empty[index];
-      $(previews[index]).classList.toggle("empty", !input.value.trim());
+    const targets = [
+      "#preview-wish",
+      "#preview-important",
+      "#preview-question",
+      "#preview-people",
+    ];
+    const placeholders = [
+      "Your everyday moment will appear here.",
+      "The things you want to keep in mind.",
+      "Your questions will appear here.",
+      "People or roles to ask about.",
+    ];
+    inputs.forEach((input, i) => {
+      $(targets[i]).textContent = input.value.trim() || placeholders[i];
+      $(targets[i]).classList.toggle("empty", !input.value.trim());
     });
-    if (!inputs.some(input => input.value.trim())) carried = null;
-    $("#note-scenario").textContent = carried ? `${summaries[carried].label} · Your editable conversation sheet` : "Your own starting point";
+    if (!inputs.some((input) => input.value.trim())) carried = null;
+    $("#note-scenario").textContent = carried
+      ? `Started from ${examples[carried].label} · Edited by you`
+      : "Your own starting point";
     if (wish.value.trim()) wish.removeAttribute("aria-invalid");
   }
   const fields = {
     "#example-question": "question",
+    "#home-routine": "routine",
     "#scene-caption": "caption",
     "#clarify": "clarify",
     "#product-title": "productTitle",
     "#product-copy": "productCopy",
     "#specialist-title": "specialistTitle",
     "#specialist-copy": "specialistCopy",
+    "#revisit": "revisit",
     "#example-caution": "caution",
+    "#overview-scenario": "label",
+    "#overview-need": "need",
+    "#overview-clarify": "summary",
+    "#overview-routes": "routes",
+    "#overview-related": "related",
+    "#overview-revisit": "later",
   };
   document.querySelectorAll("[data-example]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -103,23 +153,26 @@
       document
         .querySelectorAll("[data-example]")
         .forEach((item) =>
-          item.setAttribute("aria-pressed", String(item.dataset.example === selected)),
+          item.setAttribute(
+            "aria-pressed",
+            String(item.dataset.example === selected),
+          ),
         );
       Object.entries(fields).forEach(([selector, key]) => {
         $(selector).textContent = examples[selected][key];
       });
-      $("#overview-scenario").textContent = summaries[selected].label;
-      ["need", "clarify", "routes"].forEach(key => $("#overview-" + key).textContent = summaries[selected][key]);
-      $("#use-example").textContent = `Use ${selected} as a starting point ↘`;
-      // Browsing never mutates the note. Import is a separate, explicit action.
+      // Changing the illustrative scene never changes the visitor’s writing.
+      document.querySelectorAll('[data-room-scene]').forEach((scene) =>
+        scene.toggleAttribute('hidden', scene.dataset.roomScene !== selected));
       if (button.closest(".example-repeat")) {
         $("#example-details").open = false;
-        document.querySelector(`.example-controls [data-example="${selected}"]`).focus();
+        $(`.example-controls [data-example="${selected}"]`).focus();
       }
-      document.querySelectorAll("[data-scene]").forEach((scene) => {
-        scene.hidden = scene.dataset.scene !== selected;
-        scene.toggleAttribute("hidden", scene.dataset.scene !== selected);
-      });
+      document
+        .querySelectorAll("[data-scene]")
+        .forEach((scene) =>
+          scene.toggleAttribute("hidden", scene.dataset.scene !== selected),
+        );
     });
     button.disabled = false;
   });
@@ -127,16 +180,18 @@
     wish.value = examples[key].wish;
     important.value = "";
     questions.value = examples[key].clarify + "\n" + examples[key].takeaway;
-    people.value = summaries[key].people;
+    people.value = examples[key].people;
     carried = key;
+    $("#notepad-tools").open = true;
     updatePreview();
-    status.textContent = `${summaries[key].label} imported. All four fields are editable. Nothing has been sent.`;
+    status.textContent = `${examples[key].label} imported. All four fields are editable. Nothing has been sent.`;
   }
   $("#use-example").addEventListener("click", () => {
-    if (inputs.some(input => input.value.trim())) {
+    if (inputs.some((input) => input.value.trim())) {
       pending = selected;
       returnFocus = document.activeElement;
-      $("#confirm-context").textContent = `${summaries[selected].label} — ${examples[selected].question}`;
+      $("#confirm-context").textContent =
+        `${examples[selected].label} — ${examples[selected].question}`;
       dialog.showModal();
     } else {
       importExample(selected);
@@ -153,9 +208,10 @@
     returnFocus?.focus();
   });
   $("#use-example").disabled = false;
-  inputs.forEach(input => input.addEventListener("input", updatePreview));
+  inputs.forEach((input) => input.addEventListener("input", updatePreview));
   function validate() {
     if (wish.value.trim()) return true;
+    $("#notepad-tools").open = true;
     status.textContent =
       "Add a thought about what you would like to make easier first.";
     wish.setAttribute("aria-invalid", "true");
@@ -166,16 +222,21 @@
   function noteText() {
     return (
       "MY STARTING NOTE\nCustom Access Studios\n" +
-      (carried ? `Started from ${summaries[carried].label}; editable example.\n` : "My own starting point.\n") +
+      (carried
+        ? `Started from ${examples[carried].label}; editable example.\n`
+        : "My own starting point.\n") +
       "\nI would like to make this easier:\n" +
       wish.value.trim() +
       "\n\nWhat matters most to me:\n" +
       (important.value.trim() || "Not added yet.") +
-      "\n\nQuestions to ask:\n" + (questions.value.trim() || "Not added yet.") +
-      "\n\nWho might help:\n" + (people.value.trim() || "Not added yet.") +
+      "\n\nQuestions to ask:\n" +
+      (questions.value.trim() || "Not added yet.") +
+      "\n\nWho might help:\n" +
+      (people.value.trim() || "Not added yet.") +
       "\n\nA starting point, not an assessment.\nThis note was created on my device. It has not been sent to Custom Access Studios.\n"
     );
   }
+  // Install interception before enabling export; without JS no submit is possible.
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     if (!validate()) return;
@@ -190,9 +251,8 @@
     link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     status.textContent =
-      "Your download has started. Nothing was sent to Emily. Keep the file somewhere private.";
+      "Your download has started. Nothing was sent to CAS. Keep the file somewhere private.";
   });
-  // Enable only after interception is installed: without JS, this is never a sending form.
   $("#download-note").disabled = false;
   $("#print-note").addEventListener("click", () => {
     if (!validate()) return;
@@ -200,13 +260,16 @@
     window.print();
   });
   $("#print-note").disabled = false;
-  let reviewWasOpen;
+  let reviewWasOpen, notepadWasOpen;
   window.addEventListener("beforeprint", () => {
     reviewWasOpen = $("#review-note").open;
+    notepadWasOpen = $("#notepad-tools").open;
+    $("#notepad-tools").open = true;
     $("#review-note").open = true;
   });
   window.addEventListener("afterprint", () => {
     $("#review-note").open = reviewWasOpen;
+    $("#notepad-tools").open = notepadWasOpen;
   });
   $("#copy-note").addEventListener("click", async () => {
     if (!validate()) return;
@@ -215,10 +278,10 @@
         throw new Error("Clipboard unavailable");
       await navigator.clipboard.writeText(noteText());
       status.textContent =
-        "Copied to your clipboard. Paste it into your own notes. Nothing was sent to Emily.";
+        "Copied to your clipboard. Paste it into your own notes. Nothing was sent to CAS.";
     } catch {
       status.textContent =
-        "Your browser couldn’t copy the note. Use Download note, or select and copy the visible preview instead.";
+        "Your browser couldn’t copy the note. Use Download text, or select and copy the visible preview instead.";
     }
   });
   $("#copy-note").disabled = false;

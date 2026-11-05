@@ -1,6 +1,6 @@
 # Custom Access Studios
 
-Static concept website for Emily's accessibility guidance and coordination studio. **Public design preview, not accepting inquiries.** Business scope, service area, credentials and public contact details remain unconfirmed.
+Static concept website for Custom Access Studios: customer advocacy, understanding broader accessibility needs, and ongoing partnership as situations change. **Public design preview, not accepting inquiries.** Business scope, service area, credentials and public contact details remain unconfirmed.
 
 ## Preview and test
 
@@ -22,7 +22,7 @@ npm test
 
 ## Files
 
-- `index.html`: interactive everyday connection examples, Emily's role, local-only four-field conversation sheet with explicit replacement confirmation, preview/copy/download/print.
+- `index.html`: customer-facing concept and illustrative everyday situations; optional local-only four-field reflection sheet with explicit replacement confirmation, preview/copy/download/print.
 - `styles.css`, `script.js`: responsive presentation and progressive enhancement.
 - `accessibility.html`: accessibility, privacy and preview limitations.
 - `image-briefs.html`: optional Gemini prompts and honest image-use guidance.

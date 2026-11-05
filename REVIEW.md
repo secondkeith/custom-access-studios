@@ -42,3 +42,32 @@ Residual polish suggestions: retain more domestic illustration in the compact mo
 Verification caveat: the reviewer could not independently corroborate note import in their browser-tool session and did not inspect the PDF/export. Parent reran the browser suite successfully with real Playwright clicks covering blank-note import, preservation before confirmation, cancel, Escape, explicit replacement, editable fields, clipboard success/failure, actual download, print-only rendering and PDF generation. Extracted PDF text contained the expected sheet and no website navigation.
 
 Launch still requires confirmed business details, an actual inquiry route and manual assistive-technology/real-user validation.
+
+## Partnership redesign — new acceptance brief, review pending
+
+Keith rejected iteration 3's positioning despite its favorable visual critique. It communicated a transactional referral service and centered Emily too heavily. Its examples looked like service categories rather than demonstrations of thoughtful exploration. The former approval does not carry over to this new brief.
+
+The new design must demonstrate CAS as a customer advocate and long-term partner: understand concerns and underlying difficulties; explore related or emerging needs; scrutinize product suitability, quality and claims; consider existing and custom solutions; revisit choices as circumstances change. Avoid clinical diagnoses, fear-based predictions, invented support terms and unsupported impartiality or certification claims.
+
+Independent reviewers must evaluate two distinct gates:
+
+1. **Brief fidelity:** Does the rendered experience make the visitor feel CAS is on their side throughout changing needs, rather than funneling them to suppliers? Are mug/light/door explicitly examples of the approach, not the apparent scope of services? Does the door example consider different causes and related everyday tasks? Is the private note optional rather than the main conversion destination?
+2. **Design craft:** Is the concept distinctive, coherent, warmly human, readable and useful across desktop/mobile? Inspect actual screenshots and interactions, not just source code or test output. Give a candid yes/no on award-caliber concept quality with specific actionable findings.
+
+### Partnership pass 1 — faithful vision, craft not yet accepted
+
+Independent rendered review: **brief fidelity YES; award-caliber craft NO**. Reviewer inspected desktop/mobile screenshots and the local page. Main findings: mobile hides broader-needs/options/revisit thinking behind disclosure while leaving excess introductory prose visible; repeated narrow display serif increases reading effort; hero and example illustration languages are disconnected; wider-needs thinking should be visible as a diagram rather than mostly prose; mobile note arrow and closing sequence need intentional wrapping.
+
+Parent canonical tests pass at four widths with zero automated axe violations across all three pages. Added actual Playwright interaction checks at desktop and narrow mobile for door grip/force/walker questions, related window/fridge/cabinet tasks, revisit content, optional note import and cancel focus restoration. These pass; the reviewer's ambiguous browser-tool switching observation was not reproduced.
+
+### Partnership pass 2 — faithful vision, illustration craft still not accepted
+
+Always-visible scenario-specific Understand / Look wider / Weigh options / Revisit summaries now carry the essential approach on mobile and desktop. Branching illustrations connect the door to grip/force/clearance and windows/fridge/cabinets, the mug to kettle/carry/storage, and lighting to controls/night routes/glare. Hero annotations share the scenario vocabulary. Repetitive copy was condensed, supporting typography simplified, and mobile arrow/closing-sequence composition corrected.
+
+Parent reran `npm test`: all checks pass, including the expanded cross-viewport door and note interaction tests; `git diff --check` passes. Parent visually inspected the refreshed desktop page and mobile door overview and extracted the generated PDF to verify real sheet content. Fresh rendered screenshots were provided to an independent re-review. Verdict: **brief fidelity YES; award-caliber craft NO**. The reviewer accepted the mobile summaries, tighter copy, typography, wrapping and secondary notepad. Remaining material issues: hero uses tilted filled-room illustration while examples use frontal outlines; tea-route caption mentions a cupboard absent from the hero; diagrams connect related objects but do not visually distinguish grip, pushing force and clearance. Pass 3 targets a unified illustration language and precise, nontechnical visual depiction of these different difficulties.
+
+### Partnership pass 3 — independent concept review accepted
+
+Independent verdict: **brief fidelity YES; award-caliber concept craft YES (subjective)**. Reviewer inspected six rendered screenshots and opened the local preview. Unified frontal illustration language, actual tea-routine objects, and distinct Turn / Push / Room drawings resolved the prior material findings. Optional polish: mug grip gesture precision and desktop whitespace. This is not an external award, business-launch approval or accessibility certification.
+
+Hero and scenario drawings now share frontal domestic linework. The hero depicts a cupboard–kettle–chair routine. Separate door drawings depict turning, pushing and walker clearance; mug and light drawings similarly distinguish their questions. Parent reran `TEST_OUTPUT=/tmp/cas-pass3-verified npm test` successfully (12 page/viewport axe checks, interaction/export/privacy tests) and `git diff --check`. Parent inspected rendered desktop hero and mobile doorway detail. Fresh full-page and detailed screenshots supplied for independent two-gate review. No new approval or publication implied.
