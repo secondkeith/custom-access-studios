@@ -14,13 +14,17 @@ Solutions may be off the shelf, adjustments to what is already there, or custom 
 
 People navigating accessibility needs at home and those helping someone they care about. Lead with autonomy, choice, practical help, dignity, trust and familiar life. CAS first; Emily's legitimate founder background may support credibility but should not dominate the service narrative. Warm, concrete language—not a transactional funnel, product catalog or tool-first proposition. Do not stereotype disability or assume every visitor is older.
 
+Accessibility can be elegant and beautiful while a space still feels like home. Products should reflect personal taste and feel welcome when guests visit, not be framed as things to hide. Express this positively without shaming medical aids or implying appearance outranks safety or individual preference. Keep additions to a few sentences in the accepted hero/quality sections.
+
 Mug, light and door examples remain useful, but must explicitly demonstrate how CAS thinks and listens, not appear to define the available services. Show underlying difficulty, related needs, considered options and the ability to revisit decisions. The optional private notepad supports reflection; it is not the primary point of the site.
 
 ## Scope and truthfulness
 
 Business is still a concept. No verified public email, phone, service area, pricing, qualifications or portfolio. Do not position CAS/Emily as licensed clinicians, engineers, architects or in-house fabricators. Do not invent testimonials, actual client journeys, guaranteed outcomes, commercial independence, product testing or credentials. Clearly label illustrative situations.
 
-Static GitHub Pages site in secondkeith/custom-access-studios; customaccessstudios.com must not be configured without instruction. Preserve concept notice, noindex and inquiries-not-open state. No fake inquiry form. No third-party trackers or note transmission. Keep editable note, replacement confirmation, review-before-export, copy/download/print, keyboard and no-JavaScript safeguards.
+Static GitHub Pages site in secondkeith/custom-access-studios; customaccessstudios.com must not be configured without instruction. Preserve concept notice, noindex and services/service-inquiries-not-open state. No fake inquiry form or third-party trackers. Typing remains local with no site upload. Keep editable note, replacement confirmation, review-before-export, copy/download/print, keyboard and no-JavaScript safeguards.
+
+User-approved addition: Open email draft to info@customaccessstudios.com, clearly a concept contact rather than a verified mailbox. Validate the wish and pass all four fields using the shared note text, safely encoded, to the visitor's configured mail app. Explicitly disclose that this shares the note with that app and its policies apply; the visitor reviews/sends, not the website. No delivery or reply claim. Block encoded URIs over 1,800 characters without truncation and direct the visitor to copy/paste the full note (download/manual copy if needed). No-JavaScript email control stays disabled. Preserve the accepted visual design; this small follow-up does not require a new design-review cycle. Parent handles publication after verification; no commit or push in this implementation task.
 
 ## Design and acceptance
 

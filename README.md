@@ -1,6 +1,6 @@
 # Custom Access Studios
 
-Static concept website for Custom Access Studios: customer advocacy, understanding broader accessibility needs, and ongoing partnership as situations change. **Public design preview, not accepting inquiries.** Business scope, service area, credentials and public contact details remain unconfirmed.
+Static concept website for Custom Access Studios: customer advocacy, understanding broader accessibility needs, and ongoing partnership as situations change. **Public design preview; services and service inquiries are not open.** The email draft uses info@customaccessstudios.com as a concept contact, not a verified mailbox. Delivery and replies are unconfirmed. Business scope, service area and credentials remain unconfirmed. Accessibility can be elegant and beautiful; product choices should reflect personal taste and a home people enjoy sharing, without disparaging medical aids.
 
 ## Preview and test
 
@@ -22,7 +22,7 @@ npm test
 
 ## Files
 
-- `index.html`: customer-facing concept and illustrative everyday situations; optional local-only four-field reflection sheet with explicit replacement confirmation, preview/copy/download/print.
+- `index.html`: customer-facing concept and illustrative everyday situations; optional four-field reflection sheet with local editing, explicit replacement confirmation, preview/copy/download/print and optional email-draft handoff.
 - `styles.css`, `script.js`: responsive presentation and progressive enhancement.
 - `accessibility.html`: accessibility, privacy and preview limitations.
 - `image-briefs.html`: optional Gemini prompts and honest image-use guidance.
@@ -44,4 +44,12 @@ The current homepage uses original schematic illustrations, not client photograp
 
 Earlier iteration atmosphere reference, retained in assets but not displayed on the homepage: https://images.unsplash.com/photo-1600210492486-724fe5c67fb0 . License: https://unsplash.com/license . It is not an accessibility specification, client project, or endorsement.
 
-Self-hosted typography: Instrument Serif and DM Sans. No analytics, cookies or form backend. Note contents are not transmitted or retained in localStorage. Clipboard writes and downloads happen only when the visitor chooses them; browser form restoration remains outside the site's control.
+Self-hosted typography: Instrument Serif and DM Sans. No analytics, cookies or form backend. Typing does not upload notes; the site does not retain them in localStorage. Clipboard writes, downloads and email-draft handoff happen only when the visitor chooses them; browser form restoration remains outside the site's control.
+
+### Email draft, not delivery
+
+Open email draft validates the first field and uses the same complete `noteText()` as copy/download for all four fields. Subject and body are encoded separately with `encodeURIComponent`. It requests a `mailto:info@customaccessstudios.com` draft with subject “My starting note — Custom Access Studios”; it never automatically sends. A configured mail app is required. Opening the draft shares the note with that app, whose storage/sync/privacy policies apply. The visitor must check the complete draft and decide whether to send; neither draft opening nor delivery is verified.
+
+Mail clients have varying URI limits. The conservative guard blocks an encoded URI longer than **1,800 characters**, opens no draft and focuses Copy text with an explanation. No text is truncated. Copy and paste the full note into a manually addressed email instead (or download if clipboard access fails). Even shorter links are not guaranteed to work in every app. JavaScript-disabled controls remain disabled.
+
+Browser tests click the actual email control and intercept only its final mailto anchor navigation, without opening an app or sending email. They assert empty validation/focus, exact recipient/subject/all-four-field multiline Unicode and special-character body, no injected parameters, honest draft-request status, long-note blocking and complete clipboard fallback, and no-JavaScript safety. Existing download/print checks and 12 page/viewport axe checks remain. Screenshots and the print PDF are written to `TEST_OUTPUT`.

@@ -233,9 +233,30 @@
       (questions.value.trim() || "Not added yet.") +
       "\n\nWho might help:\n" +
       (people.value.trim() || "Not added yet.") +
-      "\n\nA starting point, not an assessment.\nThis note was created on my device. It has not been sent to Custom Access Studios.\n"
+      "\n\nA starting point, not an assessment.\nCreated on my device; shared only when I choose.\n"
     );
   }
+  $("#email-note").addEventListener("click", () => {
+    if (!validate()) return;
+    const uri = "mailto:info@customaccessstudios.com?subject=" +
+      encodeURIComponent("My starting note — Custom Access Studios") +
+      "&body=" + encodeURIComponent(noteText());
+    // Mail handlers have different limits. Never silently trim the note.
+    if (uri.length > 1800) {
+      status.textContent =
+        "This note is too long for a reliable email link. No draft was opened. Use Copy text and paste the complete note into your mail app, addressed to info@customaccessstudios.com; review it before sending. Download text is also available.";
+      $("#copy-note").focus();
+      return;
+    }
+    const link = document.createElement("a");
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    status.textContent =
+      "Email draft requested, not sent by this site. In your mail app, review the full note and choose whether to send. If no draft opens, use Copy text instead.";
+  });
+  $("#email-note").disabled = false;
   // Install interception before enabling export; without JS no submit is possible.
   form.addEventListener("submit", (event) => {
     event.preventDefault();

@@ -11,6 +11,46 @@ fs.mkdirSync(out, { recursive: true });
   try {
     const context = await browser.newContext();
     const page = await context.newPage();
+    // Intercept only the final external-protocol navigation, never send email.
+    await page.goto(base);
+    await page.locator('#notepad-tools > summary').click();
+    if (!(await page.locator('#review-note').evaluate(e=>e.open))) await page.locator('#review-note > summary').click();
+    assert.equal(await page.locator('#email-note').count(),1,'email draft control exists');
+    await page.evaluate(() => {
+      window.mailtoAttempts = [];
+      document.addEventListener('click', event => {
+        const link = event.target.closest('a[href^="mailto:"]');
+        if (link) { event.preventDefault(); window.mailtoAttempts.push(link.href); }
+      }, true);
+    });
+    await page.locator('#email-note').click();
+    assert.equal(await page.locator('#wish').getAttribute('aria-invalid'),'true');
+    assert.equal(await page.locator('#wish').evaluate(e=>e===document.activeElement),true);
+    assert.deepEqual(await page.evaluate(()=>window.mailtoAttempts),[],'empty note must not open email');
+    const emailFields = ['Tea & café\nReach #1 + 50%? ☕', 'My “home” = calm\n木 & light', 'Which size?\nA&B / C+D', 'Zoë\nFriend <helper>'];
+    for (const [i,id] of ['wish','important','questions','people'].entries()) await page.locator('#'+id).fill(emailFields[i]);
+    await page.locator('#email-note').click();
+    const attempts = await page.evaluate(()=>window.mailtoAttempts);
+    assert.equal(attempts.length,1,'real control requests one draft');
+    const mail = new URL(attempts[0]);
+    assert.equal(mail.protocol,'mailto:');
+    assert.equal(mail.pathname,'info@customaccessstudios.com');
+    assert.equal(mail.searchParams.get('subject'),'My starting note — Custom Access Studios');
+    const expectedBody = 'MY STARTING NOTE\nCustom Access Studios\nMy own starting point.\n\nI would like to make this easier:\n'+emailFields[0]+'\n\nWhat matters most to me:\n'+emailFields[1]+'\n\nQuestions to ask:\n'+emailFields[2]+'\n\nWho might help:\n'+emailFields[3]+'\n\nA starting point, not an assessment.\nCreated on my device; shared only when I choose.\n';
+    assert.equal(mail.searchParams.get('body'),expectedBody,'all four fields preserved exactly, including multiline Unicode and special characters');
+    assert.deepEqual([...mail.searchParams.keys()],['subject','body'],'no injected mail headers');
+    assert.ok(attempts[0].includes('%0A') && attempts[0].includes('%26') && attempts[0].includes('%23'));
+    assert.match(await page.locator('#note-status').innerText(),/draft.*requested/i);
+    assert.match(await page.locator('#note-status').innerText(),/review.*send/i);
+    assert.match(await page.locator('#note-status').innerText(),/not sent/i);
+    await page.locator('#wish').fill('木'.repeat(1000));
+    await page.locator('#email-note').click();
+    assert.equal((await page.evaluate(()=>window.mailtoAttempts)).length,1,'long encoded note must not attempt a truncated draft');
+    assert.match(await page.locator('#note-status').innerText(),/too long.*Copy text/i);
+    assert.equal(await page.locator('#copy-note').evaluate(e=>e===document.activeElement),true,'long note directs focus to copy fallback');
+    await context.grantPermissions(['clipboard-read','clipboard-write']);
+    await page.locator('#copy-note').click();
+    assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),expectedBody.replace(emailFields[0],'木'.repeat(1000)),'fallback copies complete note without truncation');
     const errors = [], requests = [], results = [];
     page.on('pageerror', e => errors.push(e.message));
     page.on('request', r => requests.push({url:r.url(),method:r.method(),data:r.postData()}));
@@ -126,6 +166,9 @@ fs.mkdirSync(out, { recursive: true });
       await page.keyboard.press('Escape');
       assert.equal(await page.locator('#use-example').evaluate(e=>e===document.activeElement),true,'cancel restores focus');
       assert.equal(await page.locator('#wish').inputValue(),preserved);
+      if (!(await page.locator('#review-note').evaluate(e=>e.open))) await page.locator('#review-note > summary').click();
+      await page.locator('#review-note').screenshot({path:path.join(out,width+'-note-review.png')});
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),false,'open note reflows at '+width);
     }
     const nojs=await browser.newContext({javaScriptEnabled:false});
     const nojsPage=await nojs.newPage();
@@ -133,8 +176,9 @@ fs.mkdirSync(out, { recursive: true });
     await nojsPage.locator('#notepad-tools > summary').click();
     await nojsPage.locator('#review-note > summary').click();
     assert.equal(await nojsPage.locator('button[type=submit]').isDisabled(),true,'no-JS note must not submit');
+    assert.equal(await nojsPage.locator('#email-note').isDisabled(),true,'no-JS email control must be disabled');
     assert.equal(await nojsPage.locator('noscript').isVisible(),true);
     fs.writeFileSync(path.join(out,'results.json'),JSON.stringify({base,results,errors,note,passed:true},null,2));
-    console.log(JSON.stringify({base,checks:results,interactions:'skip link, anchors, validation, real download, no note transmission, no third parties, reduced motion, no-JS safe',passed:true},null,2));
+    console.log(JSON.stringify({base,checks:results,interactions:'email empty validation, exact encoded all-four-field mailto intercepted without sending, long-note complete copy fallback, draft-request status, skip link, anchors, validation, copy/download/print, no typing/upload requests, no third parties, reduced motion, no-JS email disabled',passed:true},null,2));
   } finally { await browser.close(); }
 })().catch(e=>{console.error(e);process.exitCode=1;});

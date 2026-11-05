@@ -18,7 +18,7 @@
     <a class="skip" href="#main">Skip to content</a>
     <div class="preview">
       <span>A studio in the making</span
-      ><span>Concept preview · Inquiries are not open yet</span>
+      ><span>Concept preview · Services not yet open</span>
     </div>
     <header class="header">
       <a class="wordmark" href="./" aria-label="Custom Access Studios home"
@@ -42,7 +42,8 @@
           <p class="hero-copy">
             Custom Access Studios is taking shape to understand what’s
             difficult, weigh what could genuinely help, and work alongside you
-            as your needs change.
+            as your needs change. Accessibility can be elegant and beautiful,
+            in a space that still feels like home.
           </p>
           <a class="text-link" href="#connection"
             >See how we would think it through
@@ -333,7 +334,8 @@
         </div>
         <div class="consider-copy">
           <p>Existing or custom, an option should earn its place in your life.
-            CAS would help you ask:</p>
+            That includes products reflecting your personal taste, welcome in
+            everyday life and when guests visit. CAS would help you ask:</p>
           <dl class="questions-list">
             <div>
               <dt>Does it fit?</dt>
@@ -409,9 +411,11 @@
           </summary>
           <div class="privacy">
             <p>
-              <strong>A notepad, not an inquiry form.</strong> Nothing you type
-              is sent to CAS or saved by this site. Copy, download or print to
-              keep it. Leave out names, addresses and medical details.
+              <strong>A notepad, not an inquiry form.</strong> Typing stays in
+              your browser: this site does not upload or store your note.
+              Copy, download or print to keep it. Choosing Open email draft
+              shares the note with your chosen mail app, whose privacy policies
+              apply. Leave out names, addresses and medical details.
               <a href="accessibility.html">Privacy details</a>
             </p>
           </div>
@@ -466,7 +470,7 @@
               </p>
               <noscript
                 ><p>
-                  JavaScript is needed for the preview, copy, and download
+                  JavaScript is needed for the preview, copy, download, print and email draft
                   tools. Please write your thoughts in your own notes app
                   instead.
                 </p></noscript
@@ -501,11 +505,20 @@
                   </p>
                 </div>
                 <p class="paper-foot">
-                  A starting point, not an assessment.<br />Created here. Kept
-                  by you.
+                  A starting point, not an assessment.<br />Created here.
+                  Shared only when you choose.
                 </p>
               </aside>
+              <p id="email-help" class="form-hint">
+                Open a draft to info@customaccessstudios.com in your email app,
+                with all four fields included. Review it before sending—nothing
+                is sent automatically. If your note is too long or your email app
+                doesn’t open, use Copy text and paste it into an email instead.
+              </p>
               <div class="note-actions">
+                <button type="button" id="email-note" class="button secondary" aria-describedby="email-help" disabled>
+                  Open email draft
+                </button>
                 <button
                   type="submit"
                   form="starting-note"
@@ -540,7 +553,7 @@
             role="status"
             aria-live="polite"
           >
-            A note for you—not a message to the studio.
+            Your note is not sent by this site. You choose whether to share it.
           </p>
         </details>
       </section>
