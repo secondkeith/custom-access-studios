@@ -7,6 +7,18 @@ const base = process.env.SITE_URL || 'http://127.0.0.1:8765/';
 const out = process.env.TEST_OUTPUT || '/tmp/cas-iteration';
 fs.mkdirSync(out, { recursive: true });
 const root = path.resolve(__dirname, '..');
+const internalCopy = /rust\s+(?:marks|arrows)|art[ -]direction|edited by you|encoded characters|Gemini|service menu/i;
+async function checkCustomerCopy(page) {
+  // textContent includes SVG title/desc and collapsed content; attributes cover
+  // accessible names, descriptions and hints that aren't visible body text.
+  const copy = await page.locator('body').evaluate(body => {
+    const clone = body.cloneNode(true);
+    clone.querySelectorAll('script,style').forEach(e => e.remove());
+    return clone.textContent + '\n' + [...clone.querySelectorAll('*')].flatMap(e =>
+      ['aria-label','aria-description','alt','title','placeholder'].map(a => e.getAttribute(a) || '')).join('\n');
+  });
+  assert.doesNotMatch(copy, internalCopy, 'customer text and accessible descriptions exclude production language');
+}
 assert.equal(fs.existsSync(path.join(root, '.nojekyll')), false, 'Jekyll exclusions must not be bypassed');
 assert.equal(fs.existsSync(path.join(root, 'image-briefs.html')), false, 'production brief must not live at the public root');
 assert.ok(fs.existsSync(path.join(root, '_internal/image-briefs.html')), 'preserve internal production brief');
@@ -23,12 +35,18 @@ for (const excluded of ['_internal', 'tests', 'node_modules', 'README.md', 'BRIE
     // Intercept only the final external-protocol navigation, never send email.
     await page.goto(base);
     assert.equal(await page.locator('a[href*="image-briefs"]').count(), 0, 'no public production-brief link');
-    assert.doesNotMatch(await page.locator('body').textContent(), /Art direction|Gemini|service menu/i, 'customer copy excludes internal direction');
+    await checkCustomerCopy(page);
+    const duplicatedIds = ['example-question','home-routine','scene-caption','clarify','product-title','product-copy','specialist-title','specialist-copy','revisit','example-caution','overview-scenario','overview-need','overview-clarify','overview-routes','overview-related','overview-revisit'];
+    const exampleText = () => page.evaluate(ids => ids.map(id => document.getElementById(id).textContent.replace(/\s+/g,' ').trim()), duplicatedIds);
+    const initialExample = await exampleText();
+    await page.locator('.example-controls [data-example="lighting"]').click();
+    await page.locator('.example-controls [data-example="reach"]').click();
+    assert.deepEqual(await exampleText(), initialExample, 'HTML fallback and dynamic mug example stay synchronized');
     assert.match(await page.locator('.desk-top').innerText(), /Explore three everyday moments and the questions they can open up\./);
     await page.locator('#notepad-tools > summary').click();
     if (!(await page.locator('#review-note').evaluate(e=>e.open))) await page.locator('#review-note > summary').click();
     assert.equal(await page.locator('#email-note').count(),1,'email draft control exists');
-    assert.match(await page.locator('#email-help').innerText(), /Preview contact: delivery and replies at this address have not yet been confirmed\./);
+    assert.match(await page.locator('#email-help').innerText(), /Delivery and replies at this email address have not yet been confirmed\./);
     assert.equal(await page.locator('#email-note').isEnabled(), true, 'requested email handoff stays enabled');
     await page.evaluate(() => {
       window.mailtoAttempts = [];
@@ -54,9 +72,11 @@ for (const excluded of ['_internal', 'tests', 'node_modules', 'README.md', 'BRIE
     assert.equal(mail.searchParams.get('body'),expectedBody,'all four fields preserved exactly, including multiline Unicode and special characters');
     assert.deepEqual([...mail.searchParams.keys()],['subject','body'],'no injected mail headers');
     assert.ok(attempts[0].includes('%0A') && attempts[0].includes('%26') && attempts[0].includes('%23'));
-    assert.match(await page.locator('#note-status').innerText(),/draft.*requested/i);
+    assert.match(await page.locator('#note-status').innerText(),/If a draft opens in your email app/i);
     assert.match(await page.locator('#note-status').innerText(),/review.*send/i);
-    assert.match(await page.locator('#note-status').innerText(),/not sent/i);
+    assert.match(await page.locator('#note-status').innerText(),/Nothing has been sent by this website/i);
+    assert.match(await page.locator('#note-status').innerText(),/If no draft opens, choose Copy text/i);
+    assert.doesNotMatch(mail.searchParams.get('body'), internalCopy);
     await page.locator('#wish').fill('木'.repeat(1000));
     await page.locator('#email-note').click();
     assert.equal((await page.evaluate(()=>window.mailtoAttempts)).length,1,'long encoded note must not attempt a truncated draft');
@@ -75,6 +95,8 @@ for (const excluded of ['_internal', 'tests', 'node_modules', 'README.md', 'BRIE
         const response = await page.goto(base+filename);
         assert.equal(response.status(),200);
         await page.evaluate(() => document.fonts.ready);
+        await checkCustomerCopy(page);
+        assert.equal(await page.locator('meta[name="robots"]').getAttribute('content'), 'noindex,nofollow');
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),false,filename+' overflow at '+width);
         assert.equal(await page.locator('img').evaluateAll(es => es.some(e => !e.complete || !e.naturalWidth)),false,'broken image');
         const scan = await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();
@@ -107,6 +129,8 @@ for (const excluded of ['_internal', 'tests', 'node_modules', 'README.md', 'BRIE
     }
     await page.locator('#use-example').click();
     assert.ok((await page.locator('#wish').inputValue()).includes('mugs'));
+    assert.equal(await page.locator('#note-scenario').innerText(), 'Based on 01 / A mug', 'unmodified example must not claim visitor edits');
+    await checkCustomerCopy(page);
     await page.locator('#wish').fill('Reach my tea cupboard — browser test');
     await page.locator('.example-controls [data-example="lighting"]').click();
     const originalQuestion = await page.locator('#questions').inputValue();
@@ -139,6 +163,8 @@ for (const excluded of ['_internal', 'tests', 'node_modules', 'README.md', 'BRIE
     const destination=path.join(out,'note.txt');
     await download.saveAs(destination);
     const note=fs.readFileSync(destination,'utf8');
+    assert.match(note, /Based on 02 \/ A light\./);
+    assert.doesNotMatch(note, internalCopy);
     assert.ok(note.includes('Reach my tea cupboard — browser test'));
     assert.ok(note.includes('Keep my favourite cups. No app.'));
     assert.ok(note.includes('Could a lower shelf work?'));
@@ -162,6 +188,27 @@ for (const excluded of ['_internal', 'tests', 'node_modules', 'README.md', 'BRIE
       await page.setViewportSize({width,height:1000});
       await page.goto(base);
       assert.equal(await page.locator('#notepad-tools').getAttribute('open'),null,'note must remain optional on first visit');
+      for (const [key,label] of [['reach','01 / A mug'],['lighting','02 / A light'],['doorway','03 / A door']]) {
+        await page.locator(`.example-controls [data-example="${key}"]`).click();
+        if (!(await page.locator('#example-details').evaluate(e=>e.open))) await page.locator('#example-details > summary').click();
+        await checkCustomerCopy(page);
+        // Element captures can pull the offscreen fixed skip link into a tall
+        // image. Hide only its unfocused state for capture, not during testing.
+        await page.locator('#connection').screenshot({path:path.join(out,`${width}-${key}-expanded.png`),style:'.skip:not(:focus) { visibility: hidden; }'});
+        await page.locator('#use-example').click();
+        if (await page.locator('#example-confirm').isVisible()) await page.locator('#replace-example').click();
+        if (!(await page.locator('#review-note').evaluate(e=>e.open))) await page.locator('#review-note > summary').click();
+        assert.equal(await page.locator('#note-scenario').innerText(), 'Based on '+label);
+        await checkCustomerCopy(page);
+        const [exampleDownload] = await Promise.all([page.waitForEvent('download'),page.locator('#download-note').click()]);
+        const examplePath = path.join(out,`${width}-${key}-note.txt`);
+        await exampleDownload.saveAs(examplePath);
+        const exampleNote = fs.readFileSync(examplePath,'utf8');
+        assert.doesNotMatch(exampleNote, internalCopy);
+        assert.ok(exampleNote.includes('Based on '+label+'.'));
+        for (const id of ['wish','questions','people']) assert.ok(exampleNote.includes(await page.locator('#'+id).inputValue()), 'export preserves '+key+' '+id);
+      }
+      await page.goto(base);
       await page.locator('.example-controls [data-example="doorway"]').click();
       await page.locator('#connection').screenshot({path:path.join(out,width+'-door-overview.png')});
       if (!(await page.locator('#example-details').evaluate(e=>e.open))) await page.locator('#example-details > summary').click();
@@ -181,7 +228,8 @@ for (const excluded of ['_internal', 'tests', 'node_modules', 'README.md', 'BRIE
       assert.equal(await page.locator('#use-example').evaluate(e=>e===document.activeElement),true,'cancel restores focus');
       assert.equal(await page.locator('#wish').inputValue(),preserved);
       if (!(await page.locator('#review-note').evaluate(e=>e.open))) await page.locator('#review-note > summary').click();
-      await page.locator('#review-note').screenshot({path:path.join(out,width+'-note-review.png')});
+      await page.locator('#review-note').screenshot({path:path.join(out,width+'-note-review.png'),style:'.skip:not(:focus) { visibility: hidden; }'});
+      await page.locator('#start').screenshot({path:path.join(out,width+'-open-note.png'),style:'.skip:not(:focus) { visibility: hidden; }'});
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),false,'open note reflows at '+width);
     }
     const nojs=await browser.newContext({javaScriptEnabled:false});

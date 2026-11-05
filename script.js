@@ -21,16 +21,16 @@
         "Is the shelf too high, the handle hard to grip, or the mug heavy when full? Which part of making tea takes the most effort?",
       productTitle: "Look beyond the mug",
       productCopy:
-        "What about lifting the kettle, carrying the drink, or reaching other everyday things? We would ask what else feels awkward—not assume it does.",
+        "What about lifting the kettle, carrying your drink or reaching other everyday things? You can tell us whether any of these feel awkward too.",
       specialistTitle: "Consider what fits your life",
       specialistCopy:
-        "A lower shelf, a different cup, or an off-the-shelf fitting may be enough. If not, a custom storage design could be explored with a suitable specialist. Keep the favourite mug in the conversation.",
+        "A lower shelf, a different cup or a ready-made fitting may help. If not, custom storage could be explored with a suitable specialist—with your favourite mug still part of the plan.",
       revisit:
         "Does it still feel comfortable when you’re tired, or if you use the kitchen differently? A useful change today can be reconsidered later, with you.",
       caution:
-        "These are prompts, not recommendations. Fit, load limits, comfortable operation and safe installation would need checking.",
+        "These ideas are a starting point, not recommendations for your home. Before making a change, check fit, weight limits, ease of use and safe installation.",
       need: "Reaching is only one part of making tea.",
-      summary: "Is it the height, the grip, or the weight?",
+      summary: "Height, grip, or the weight of a full mug?",
       related: "Lifting the kettle, carrying tea, reaching storage.",
       routes: "Move the mug, try an existing fitting, or explore custom storage.",
       later: "Still comfortable on a tired day or with a different kitchen routine?",
@@ -53,11 +53,11 @@
         "What happens when you get up at night, move between rooms, or need the curtains closed? We would explore glare, other controls and the route you use—only where they matter to you.",
       specialistTitle: "Consider simplicity as well as features",
       specialistCopy:
-        "Moving a lamp or choosing an off-the-shelf control might help. A tailored lighting or control design is another possibility. Compare compatibility, usable buttons, reliability and a backup—not just a “smart” label.",
+        "Moving a lamp or choosing a ready-made control might help. Lighting or controls designed around your needs are another possibility. Would they work with what you already have? Are they reliable and easy to use, and is there a backup if the controls stop working?",
       revisit:
         "If your seating, vision or preferences change, does the light still work for you? Revisit placement and controls rather than expect you to adapt to them.",
       caution:
-        "These are prompts, not electrical instructions. Compatibility and electrical safety need checking; fixed wiring or switch alterations require a qualified electrician.",
+        "These ideas are not instructions for electrical work. Check that products work safely together. Changes to fixed wiring or switches require a qualified electrician.",
       need: "A better switch is not always the whole answer.",
       summary: "Is it reach, operation, visibility—or the light itself?",
       related: "Other controls, the night-time route, and glare.",
@@ -78,18 +78,18 @@
         "Is gripping or turning the handle difficult? Does pushing the door take too much force? Is there enough clearance for your walker, including room to turn?",
       productTitle: "Look beyond this door",
       productCopy:
-        "Do windows, the fridge or cabinet doors ask for the same awkward grip or effort? What about the threshold and the space beyond? We would ask, not assume—and follow what you notice.",
+        "Do windows, the fridge or cabinet doors need the same awkward grip or effort? Is the threshold or the space beyond difficult too? You decide which concerns to explore.",
       specialistTitle: "Consider the cause, not just the handle",
       specialistCopy:
-        "Different off-the-shelf hardware could suit one difficulty but leave another untouched. A custom alteration may be worth exploring with a qualified access or building professional. Check operating force, clearance and the whole route.",
+        "A ready-made handle or fitting could help with one difficulty but not another. A custom change may be worth exploring with a qualified access or building professional. Consider how much effort the door takes, the space to move through it and the route beyond.",
       revisit:
-        "If you use a different mobility aid or your strength varies, would the route still work? We can consider room for change without assuming what your future will be.",
+        "If you use a different mobility aid or your strength varies, would the route still work? You decide how much you want to plan for possible changes.",
       caution:
-        "These are prompts, not a diagnosis or alteration plan. Safe access, fire safety, building requirements and structural changes need appropriate professional assessment.",
+        "These questions are not an assessment or a plan for altering your home. A qualified professional needs to assess safe access, fire safety, building requirements and any structural changes.",
       need: "The same doorway can be difficult for different reasons.",
-      summary: "Grip and turning, pushing force, or clearance for a walker?",
+      summary: "Turning the handle, pushing the door, or room for a walker?",
       related: "Do windows, the fridge or cabinets ask for the same grip or effort?",
-      routes: "Compare existing hardware with a custom alteration, with qualified advice.",
+      routes: "Compare ready-made handles or fittings with a custom change, with qualified advice.",
       later: "Would this route still suit a different mobility aid or varying strength?",
       wish: "I’d like to move through a familiar doorway more comfortably, without struggling with the handle, force or space.",
       takeaway:
@@ -125,7 +125,7 @@
     });
     if (!inputs.some((input) => input.value.trim())) carried = null;
     $("#note-scenario").textContent = carried
-      ? `Started from ${examples[carried].label} · Edited by you`
+      ? `Based on ${examples[carried].label}`
       : "Your own starting point";
     if (wish.value.trim()) wish.removeAttribute("aria-invalid");
   }
@@ -184,7 +184,7 @@
     carried = key;
     $("#notepad-tools").open = true;
     updatePreview();
-    status.textContent = `${examples[key].label} imported. All four fields are editable. Nothing has been sent.`;
+    status.textContent = `${examples[key].label} added to your note. You can change or remove anything. Nothing has been sent.`;
   }
   $("#use-example").addEventListener("click", () => {
     if (inputs.some((input) => input.value.trim())) {
@@ -223,7 +223,7 @@
     return (
       "MY STARTING NOTE\nCustom Access Studios\n" +
       (carried
-        ? `Started from ${examples[carried].label}; editable example.\n`
+        ? `Based on ${examples[carried].label}.\n`
         : "My own starting point.\n") +
       "\nI would like to make this easier:\n" +
       wish.value.trim() +
@@ -244,7 +244,7 @@
     // Mail handlers have different limits. Never silently trim the note.
     if (uri.length > 1800) {
       status.textContent =
-        "This note is too long for a reliable email link. No draft was opened. Use Copy text and paste the complete note into your mail app, addressed to info@customaccessstudios.com; review it before sending. Download text is also available.";
+        "Your note is too long to open as an email draft here. Nothing has been sent. Choose Copy text and paste your complete note into an email to info@customaccessstudios.com, then review it before sending. You can also choose Download text to save it.";
       $("#copy-note").focus();
       return;
     }
@@ -254,7 +254,7 @@
     link.click();
     link.remove();
     status.textContent =
-      "Email draft requested, not sent by this site. In your mail app, review the full note and choose whether to send. If no draft opens, use Copy text instead.";
+      "If a draft opens in your email app, review your note before sending. Nothing has been sent by this website. If no draft opens, choose Copy text and paste your note into an email instead.";
   });
   $("#email-note").disabled = false;
   // Install interception before enabling export; without JS no submit is possible.

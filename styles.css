@@ -157,6 +157,10 @@ em {
   height: 57px;
   display: grid;
   place-content: center;
+  flex-shrink: 0;
+  /* Center the lowercase ink, not its line box; compensate trailing tracking.
+     Asymmetric padding leaves the circle and absolute arrow unchanged. */
+  padding: 0 1px 2px 0;
   font-family: var(--serif);
   font-size: 29px;
   font-weight: 400;
