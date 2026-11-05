@@ -1,6 +1,6 @@
 # Custom Access Studios
 
-Static concept website for Custom Access Studios: customer advocacy, understanding broader accessibility needs, and ongoing partnership as situations change. **Public design preview; services and service inquiries are not open.** The email draft uses info@customaccessstudios.com as a concept contact, not a verified mailbox. Delivery and replies are unconfirmed. Business scope, service area and credentials remain unconfirmed. Accessibility can be elegant and beautiful; product choices should reflect personal taste and a home people enjoy sharing, without disparaging medical aids.
+Static concept website for Custom Access Studios: customer advocacy, understanding broader accessibility needs, and ongoing partnership as situations change. **Public design preview; services and service inquiries are not open.** The email draft uses info@customaccessstudios.com as a preview contact. Delivery and replies at this address have not yet been confirmed. Business scope, service area and credentials remain unconfirmed. Accessibility can be elegant and beautiful; product choices should reflect personal taste and a home people enjoy sharing, without disparaging medical aids.
 
 ## Preview and test
 
@@ -18,14 +18,15 @@ npx playwright install chromium
 npm test
 ```
 
-`SITE_URL` overrides the local URL (include trailing slash). `TEST_OUTPUT` overrides `/tmp/cas-iteration`. Tests exercise three pages at 1440, 768, 390 and 320 pixels; check horizontal reflow and axe rules; verify skip navigation, anchors, example selection, preservation of user writing, clipboard success/failure, real downloads, no third-party requests, no note transmission, reduced motion and safe no-JavaScript behavior. Automated checks are not accessibility certification or a substitute for screen-reader/real-device/user testing.
+`SITE_URL` overrides the local URL (include trailing slash). `TEST_OUTPUT` overrides `/tmp/cas-iteration`. Tests exercise the two public pages at 1440, 768, 390 and 320 pixels; check horizontal reflow and axe rules; verify skip navigation, anchors, example selection, preservation of user writing, clipboard success/failure, real downloads, no third-party requests, no note transmission, reduced motion and safe no-JavaScript behavior. Automated checks are not accessibility certification or a substitute for screen-reader/real-device/user testing.
 
 ## Files
 
 - `index.html`: customer-facing concept and illustrative everyday situations; optional four-field reflection sheet with local editing, explicit replacement confirmation, preview/copy/download/print and optional email-draft handoff.
 - `styles.css`, `script.js`: responsive presentation and progressive enhancement.
 - `accessibility.html`: accessibility, privacy and preview limitations.
-- `image-briefs.html`: optional Gemini prompts and honest image-use guidance.
+- `_internal/image-briefs.html`: internal production brief with optional Gemini prompts and honest image-use guidance; excluded from GitHub Pages.
+- `_config.yml`: Jekyll exclusions for internal briefs, development files and documentation.
 - `BRIEF.md`: positioning and constraints.
 - `REVIEW.md`: independent design review record; judgments separate from launch readiness.
 - `tests/browser.cjs`: repeatable browser checks, screenshots and JSON results.
@@ -33,6 +34,8 @@ npm test
 ## Publication
 
 GitHub Pages, main branch root. No custom domain configured. `noindex,nofollow` remains until launch approval; this does not make the site private. Previous iterations are retained in Git history.
+
+The public site has two pages: `index.html` and `accessibility.html`. Jekyll must remain enabled (do not restore `.nojekyll`): `_config.yml` explicitly excludes `_internal` and production/development documentation. The former `/image-briefs.html` endpoint is removed. A plain local HTTP server does not apply these exclusions and can serve internal files; it is not a publication build. Internal here means excluded from the website, not secret in the source repository. After publication, verify both the old brief URL and `/_internal/image-briefs.html` return 404.
 
 ## Before launch
 
@@ -52,4 +55,4 @@ Open email draft validates the first field and uses the same complete `noteText(
 
 Mail clients have varying URI limits. The conservative guard blocks an encoded URI longer than **1,800 characters**, opens no draft and focuses Copy text with an explanation. No text is truncated. Copy and paste the full note into a manually addressed email instead (or download if clipboard access fails). Even shorter links are not guaranteed to work in every app. JavaScript-disabled controls remain disabled.
 
-Browser tests click the actual email control and intercept only its final mailto anchor navigation, without opening an app or sending email. They assert empty validation/focus, exact recipient/subject/all-four-field multiline Unicode and special-character body, no injected parameters, honest draft-request status, long-note blocking and complete clipboard fallback, and no-JavaScript safety. Existing download/print checks and 12 page/viewport axe checks remain. Screenshots and the print PDF are written to `TEST_OUTPUT`.
+Browser tests click the actual email control and intercept only its final mailto anchor navigation, without opening an app or sending email. They assert empty validation/focus, exact recipient/subject/all-four-field multiline Unicode and special-character body, no injected parameters, honest draft-request status, long-note blocking and complete clipboard fallback, and no-JavaScript safety. Existing download/print checks and eight public page/viewport axe checks remain. Screenshots and the print PDF are written to `TEST_OUTPUT`.

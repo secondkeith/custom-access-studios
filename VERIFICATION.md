@@ -1,6 +1,9 @@
 # Verification
 
-## Local browser checks
+## Current customer-content scope
+The public page loop in `tests/browser.cjs` now covers only `index.html` and `accessibility.html` at four widths. Production image guidance has moved to `_internal/image-briefs.html`; `_config.yml` excludes it and `.nojekyll` has been removed so GitHub Pages applies those exclusions. Tests also guard against public image-brief links, internal-direction customer text, and loss of the preview-contact warning. Historical checks below describe earlier revisions, not proof of the current deployment. Publication and live 404 verification remain a separate step.
+
+## Historical local browser checks
 Executed in Chromium through Playwright 1.64.1 with @axe-core/playwright 4.14.0.
 
 - Homepage at 1440, 768, 390, and 320 CSS pixels: no horizontal overflow, no failed images, zero automated WCAG-tagged axe violations.

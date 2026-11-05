@@ -1,0 +1,12 @@
+# GitHub Pages must run Jekyll so internal production material is not published.
+exclude:
+  - _internal
+  - tests
+  - node_modules
+  - README.md
+  - BRIEF.md
+  - REVIEW.md
+  - DESIGN.md
+  - VERIFICATION.md
+  - package.json
+  - package-lock.json

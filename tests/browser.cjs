@@ -6,6 +6,15 @@ const path = require('node:path');
 const base = process.env.SITE_URL || 'http://127.0.0.1:8765/';
 const out = process.env.TEST_OUTPUT || '/tmp/cas-iteration';
 fs.mkdirSync(out, { recursive: true });
+const root = path.resolve(__dirname, '..');
+assert.equal(fs.existsSync(path.join(root, '.nojekyll')), false, 'Jekyll exclusions must not be bypassed');
+assert.equal(fs.existsSync(path.join(root, 'image-briefs.html')), false, 'production brief must not live at the public root');
+assert.ok(fs.existsSync(path.join(root, '_internal/image-briefs.html')), 'preserve internal production brief');
+const pagesConfig = fs.readFileSync(path.join(root, '_config.yml'), 'utf8');
+assert.match(pagesConfig, /^exclude:\s*$/m);
+for (const excluded of ['_internal', 'tests', 'node_modules', 'README.md', 'BRIEF.md', 'REVIEW.md']) {
+  assert.ok(pagesConfig.split('\n').includes('  - '+excluded), excluded+' must be excluded from Pages');
+}
 (async () => {
   const browser = await chromium.launch({args:['--no-sandbox']});
   try {
@@ -13,9 +22,14 @@ fs.mkdirSync(out, { recursive: true });
     const page = await context.newPage();
     // Intercept only the final external-protocol navigation, never send email.
     await page.goto(base);
+    assert.equal(await page.locator('a[href*="image-briefs"]').count(), 0, 'no public production-brief link');
+    assert.doesNotMatch(await page.locator('body').textContent(), /Art direction|Gemini|service menu/i, 'customer copy excludes internal direction');
+    assert.match(await page.locator('.desk-top').innerText(), /Explore three everyday moments and the questions they can open up\./);
     await page.locator('#notepad-tools > summary').click();
     if (!(await page.locator('#review-note').evaluate(e=>e.open))) await page.locator('#review-note > summary').click();
     assert.equal(await page.locator('#email-note').count(),1,'email draft control exists');
+    assert.match(await page.locator('#email-help').innerText(), /Preview contact: delivery and replies at this address have not yet been confirmed\./);
+    assert.equal(await page.locator('#email-note').isEnabled(), true, 'requested email handoff stays enabled');
     await page.evaluate(() => {
       window.mailtoAttempts = [];
       document.addEventListener('click', event => {
@@ -55,7 +69,7 @@ fs.mkdirSync(out, { recursive: true });
     page.on('pageerror', e => errors.push(e.message));
     page.on('request', r => requests.push({url:r.url(),method:r.method(),data:r.postData()}));
     page.on('response', r => { if (r.status() >= 400) errors.push(r.status()+' '+r.url()); });
-    for (const filename of ['', 'accessibility.html', 'image-briefs.html']) {
+    for (const filename of ['', 'accessibility.html']) {
       for (const width of [1440,768,390,320]) {
         await page.setViewportSize({width,height:1000});
         const response = await page.goto(base+filename);
